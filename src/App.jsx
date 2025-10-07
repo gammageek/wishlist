@@ -90,8 +90,7 @@ function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // REPLACE THIS WITH YOUR ACTUAL GOOGLE CLIENT ID
-  const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+  const GOOGLE_CLIENT_ID = '606202297843-4m16kqaao6k7v9vkl9eqfcs2r2fk54te.apps.googleusercontent.com';
 
   function handleLogin(e) {
     e.preventDefault();
@@ -102,19 +101,6 @@ function LoginPage({ onLogin }) {
   }
 
   function handleGoogleLogin() {
-    // FOR DEMO: Simulated Google Login
-    // Remove this section when implementing real OAuth
-    const mockGoogleUser = {
-      email: 'user@gmail.com',
-      full_name: 'Google User',
-      auth_method: 'google',
-      picture: 'https://via.placeholder.com/150'
-    };
-    
-    alert('Google Sign-In simulated!\n\nTo enable real Google authentication:\n\n1. Get OAuth Client ID from Google Cloud Console\n2. Replace GOOGLE_CLIENT_ID in code\n3. Load Google Identity Services script\n4. Use google.accounts.id.initialize()\n\nFor demo, logging you in as: ' + mockGoogleUser.email);
-    onLogin(mockGoogleUser);
-
-    /* 
     // REAL GOOGLE OAUTH IMPLEMENTATION:
     // Uncomment this code and remove the mock login above
     
@@ -140,32 +126,24 @@ function LoginPage({ onLogin }) {
       `access_type=offline`;
     
     window.location.href = authUrl;
-    */
   }
 
   function handleGoogleResponse(response) {
-    // This function handles the response from Google
-    // The response contains a JWT credential
     try {
-      // Decode the JWT to get user info
       const payload = JSON.parse(atob(response.credential.split('.')[1]));
-      
       const googleUser = {
         email: payload.email,
         full_name: payload.name,
         picture: payload.picture,
         auth_method: 'google'
       };
-      
       onLogin(googleUser);
     } catch (error) {
       console.error('Error parsing Google response:', error);
     }
   }
 
-  // Load Google Identity Services script
   useEffect(() => {
-    // Only load in production with real CLIENT_ID
     if (GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
@@ -186,14 +164,13 @@ function LoginPage({ onLogin }) {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-600 rounded-full mb-4">
             <Gift className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Gift Exchange</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Wishlist</h1>
           <p className="text-gray-600">Manage wishlists and Secret Santa</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In</h2>
 
-          {/* Google Sign-In Button */}
           <button
             onClick={handleGoogleLogin}
             className="w-full bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-3 hover:shadow-md mb-6"
@@ -207,7 +184,6 @@ function LoginPage({ onLogin }) {
             Continue with Google
           </button>
 
-          {/* Divider */}
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
@@ -217,7 +193,6 @@ function LoginPage({ onLogin }) {
             </div>
           </div>
 
-          {/* Email/Password Form */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
@@ -256,10 +231,7 @@ function LoginPage({ onLogin }) {
             </button>
 
             <div className="text-center">
-              <button
-                type="button"
-                className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
-              >
+              <button type="button" className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
                 Forgot password?
               </button>
             </div>
@@ -274,16 +246,6 @@ function LoginPage({ onLogin }) {
             <li>• jofrnass@gmail.com</li>
           </ul>
           <p className="text-xs text-blue-600 mt-2">Any password works for email login</p>
-        </div>
-
-        <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <p className="text-xs text-amber-800 font-medium mb-2">⚙️ Setup Required for Google OAuth:</p>
-          <ol className="text-xs text-amber-700 space-y-1 list-decimal list-inside">
-            <li>Get Client ID from Google Cloud Console</li>
-            <li>Replace GOOGLE_CLIENT_ID in code</li>
-            <li>Uncomment real OAuth implementation</li>
-            <li>Deploy to production domain</li>
-          </ol>
         </div>
 
         <p className="text-center text-sm text-gray-600 mt-6">
